@@ -1,11 +1,8 @@
 package com.mireyaserrano.tema11;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
-public class Cat {
+public class CatConBuffer {
     public static void main(String[] args){
         if (args.length != 1) {
             System.out.println("Debe indicar la ruta del archivo");
@@ -14,14 +11,13 @@ public class Cat {
         }
         String rutaArchivo = args[0];
         File file = new File(rutaArchivo);
-        try (FileReader fileReader = new FileReader(file)) {
-            int caracter;
-            char[] texto = new char[1024];
-            int cantidad;
-            while ( (cantidad = fileReader.read(texto)) >= 0){
-                for (int i = 0; i < cantidad; i++) {
-                    System.out.print(texto[i]);
-                }
+        try (
+                FileReader fileReader = new FileReader(file);
+                BufferedReader br = new BufferedReader(fileReader);
+        ) {
+            String linea;
+            while ((linea = br.readLine()) != null){
+                System.out.println(linea);
             }
         } catch (FileNotFoundException fnfe) {
             System.out.println("El archivo no existe");
@@ -30,5 +26,5 @@ public class Cat {
             System.out.println("Error de lectura");
             System.exit(-1);
         }
-    }   
+    }
 }
